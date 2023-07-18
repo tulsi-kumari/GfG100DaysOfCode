@@ -30,19 +30,22 @@ class Solution
     public int LongestRepeatingSubsequence(String str)
     {
         // code here
-        int n=str.length();
-        int[][] dp=new int[n+1][n+1];
-        for(int i=0;i<n+1;i++){
-            for(int j=0;j<n+1;j++){
-                if(i==0||j==0){
-                    dp[i][j]=0;
-                }else if(str.charAt(i-1)==str.charAt(j-1) && i!=j){
-                    dp[i][j]=1+dp[i-1][j-1];
-                }else{
-                    dp[i][j]=Math.max(dp[i-1][j],dp[i][j-1]);
-                }
-            }
+        Integer[][] dp=new Integer[str.length()][str.length()];
+        return solve(0,str,0,dp);
+    }
+    public int solve(int i,String str,int j,Integer[][] dp){
+        if(i>=str.length()||j>=str.length()){
+            return 0;
         }
-        return dp[n][n];
+        if(dp[i][j]!=null){
+            return dp[i][j];
+        }
+        char f=str.charAt(i);
+        char s=str.charAt(j);
+        if(f==s && i!=j){
+            return dp[i][j]=1+solve(i+1,str,j+1,dp);
+        }else{
+            return dp[i][j]=Math.max(solve(i+1,str,j,dp),solve(i,str,j+1,dp));
+        }
     }
 }
